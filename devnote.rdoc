@@ -1,0 +1,72 @@
+== Start Point
+
+Main reference of this project is below:
+
+* http://blog.railsrumble.com/2010/10/08/intridea-omniauth/
+
+=== Create new rails app and register to github
+
+Start new rails app on github.
+
+ $ rails new siso --skip-bundle; cd siso
+ <...>
+ $ git init; git add .; git commit -m "new rails app 'siso'."
+ $ git remote add origin git@github.com:hyeoncheon/siso.git
+ $ git push -u origin master
+
+and install gem for OmniAuth. (at the start, omniauth-openid only)
+
+ $ cat >>Gemfile<<EOF
+ 
+ ### local
+ gem 'omniauth-openid'
+ EOF
+ $ bundle install --path=$HOME/.gem
+ Fetching source index for https://rubygems.org/
+ <...>
+
+setup OmniAuth-OpenID.
+
+ $ cat >>config/initializers/omniauth.rb<<EOF
+ Rails.application.config.middleware.use OmniAuth::Builder do
+   require 'openid/store/filesystem'
+   provider :openid, :store => OpenID::Store::Filesystem.new('/tmp')
+ end
+ EOF
+
+generate new controller for session management. it handle callback from OA.
+
+ $ rails g controller sessions
+      create  app/controllers/sessions_controller.rb
+      invoke  erb
+      create    app/views/sessions
+      invoke  test_unit
+      create    test/functional/sessions_controller_test.rb
+      invoke  helper
+      create    app/helpers/sessions_helper.rb
+      invoke    test_unit
+      create      test/unit/helpers/sessions_helper_test.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/sessions.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/sessions.css.scss
+ $
+
+Finally, setup route and write callback method for test.
+
+add to config/route.rb
+
+ match '/auth/:provider/callback', :to => 'sessions#create'
+
+add to app/controllers/sessions_controller.rb
+
+  def create
+    render :xml => request.env['omniauth.auth'].to_xml
+  end
+
+OK, then start rails server and open http://localhost:3000/auth/open_id
+this is step #1.
+
+
+
