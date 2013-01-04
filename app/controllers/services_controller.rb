@@ -58,5 +58,15 @@ class ServicesController < ApplicationController
     flash[:error] = "Authentication error!"
     redirect_to services_path
   end
+
+  def destroy
+    @service = current_user.services.find(params[:id])
+    if session[:auth] == @service.id
+      flash[:error] = "You are currently signed in with this account!"
+    else
+      @service.destroy
+    end
+    redirect_to services_path
+  end
 end
 # vim: set ts=2 sw=2 expandtab:
