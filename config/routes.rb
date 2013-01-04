@@ -1,6 +1,15 @@
 Siso::Application.routes.draw do
 
   match '/auth/:provider/callback', :to => 'services#create'
+  match '/auth/failure', :to => 'services#failure'
+
+  resources :services, :only => [:index, :create, :destroy] do
+    collection do
+      get 'signin'
+      get 'signout'
+      get 'signup'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -52,6 +61,7 @@ Siso::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
+  root :to => 'services#index'
 
   # See how all your routes lay out with "rake routes"
 

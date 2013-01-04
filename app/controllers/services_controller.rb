@@ -16,20 +16,47 @@ class ServicesController < ApplicationController
       unless @user = User.find_by_mail(ai[:mail])
         # service and user not found. so register new user and service.
         user = Group.find_by_name('guest').users.create(:mail => ai[:mail])
-        user.services.create(:uid => ai[:uid],
-                             :provider => ai[:provider],
-                             :smail => ai[:mail])
-        logger.info("new service #{ai[:provider]} for #{user.mail}.")
-        render :text => "new user #{user.mail} (#{user.id})"
+        @auth = user.services.create(:uid => ai[:uid],
+                                     :provider => ai[:provider],
+                                     :smail => ai[:mail])
+
+        flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
       else
-        # new service but user exist with same email.
-        #logger.info("new user #{user.mail} (#{user.id})")
-        render :text => "Auth service not exist but user exist."
+        flash[:error] = "new authentication for existing user."
       end
     else
-      # already registered service so process login
-      render :text => omniauth.to_yaml
+      flash[:notice] = "welcome! #{@auth.user.mail} (from #{@auth.provider})"
     end
+    session[:user] = @auth.user.id
+    session[:name] = @auth.user.name
+    session[:mail] = @auth.user.mail
+    session[:auth] = @auth.id
+    redirect_to services_path
+    #render :text => omniauth.to_yaml
+  end
+
+  def index
+    if current_user
+      @services = current_user.services.order('provider asc')
+    else
+      @services = []
+    end
+  end
+
+  def signout
+    if current_user
+      session[:user] = nil
+      session[:auth] = nil
+      session.delete :user
+      session.delete :auth
+      flash[:notice] = "successfully signed out!"
+    end
+    redirect_to services_path
+  end
+
+  def failure
+    flash[:error] = "Authentication error!"
+    redirect_to services_path
   end
 end
 # vim: set ts=2 sw=2 expandtab:

@@ -1,0 +1,33 @@
+<div id="services_manage" class="services">
+  <h2>Authentication Services - Settings</h2>
+  <h3>Your current Authentications:</h3>
+
+  <% @services.each do |service| %>  
+    <div class="service_in_use round">  
+      <div class="service_img">
+      <% if ['facebook','google','twitter'].index(service.provider) %>
+        <%= image_tag "/icons/64s/#{service.provider}.png", :size => "64x64" %>
+      <% else %>
+        <%= image_tag "/icons/64s/openid.png", :size => "64x64" %>
+      <% end %>
+      </div>
+
+      <div class="service_userdata">
+      UID: <%= service.uid if service.uid != '' %><br />
+      Name: <%= service.sname if service.sname != '' %><br />
+      Mail: <%= service.smail if service.smail != '' %><br />
+      <% if session[:auth] == service.id %>
+      <span>Current Login</span>
+      <% else %>
+      <%= link_to "Remove this service", service, :confirm => 'Are you sure you want to remove this authentication?', :method => :delete, :class => "remove" %>
+      <% end %>
+      </div>
+    </div>  
+  <% end %>
+
+  <div id="services_available">
+  <h3>Add more Authentications:</h3>
+
+  <!--%= render 'services_list'%-->
+  </div>
+</div>

@@ -11,3 +11,50 @@
  *= require_self
  *= require_tree .
  */
+
+body { margin:0; padding:0; border:0; background:#ddd; }
+a { text-decoration:none; color:blue; }
+h2 { border-bottom: solid 2px #444; }
+
+div#head { background:black; color:white; }
+div#head h1 { display:inline-block; margin:0; padding: 15px 5px 2px; }
+div#head_comment { color:white; }
+div#user { float: right; }
+div#nav_user { background: #fff; }
+div#nav_user ul { margin:0; padding:0 5px; background:#444; color:#bbb; }
+div#nav_user ul * { display:inline; }
+div#nav_user ul * a { color:white; }
+div#flash { background: #fff; }
+div#body { padding:10px; }
+
+div.service_in_use { padding:10px; margin:20px; border:2px solid #777;
+	background:#fff; }
+div.service_in_use { background:#fff; }
+div.service_in_use * { display:inline; }
+div.service_img { float:left; height:64px; width:64px;
+	margin-right:10px; color:white; }
+div.service_userdata { display:inline; }
+
+div.flash { padding:5px; border:2px solid #000; }
+div.notice { background:#cfd; color:#050; }
+div.error { background:#fdd; color:#500; }
+
+.siso_dialog {
+	box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.3);
+}
+h1.siso_dialog { background: #555; color: white; font-size: 18px;
+	margin: 30px auto 0; padding: 10px 10px 15px; width: 480px;
+	border: 10px solid #444;
+	border-style: solid solid none;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	text-align: center;
+}
+div.siso_dialog { background: #fff; color: #444; font-size: 18px;
+	margin: 0 auto 30px; padding: 10px 10px 15px; width: 480px;
+	border: 10px solid #eee;
+	border-style: none solid solid;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	text-align: center;
+}
