@@ -13,15 +13,15 @@
 ActiveRecord::Schema.define(:version => 20130103081856) do
 
   create_table "groups", :force => true do |t|
-    t.string   "name"
-    t.boolean  "active"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",                         :null => false
+    t.boolean  "active",     :default => true
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   create_table "services", :force => true do |t|
-    t.string   "provider"
-    t.string   "uid"
+    t.string   "provider",   :null => false
+    t.string   "uid",        :null => false
     t.string   "sname"
     t.string   "smail"
     t.integer  "user_id"
@@ -33,11 +33,11 @@ ActiveRecord::Schema.define(:version => 20130103081856) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.string   "mail"
-    t.boolean  "active"
+    t.string   "mail",                          :null => false
+    t.boolean  "active",     :default => false
     t.integer  "group_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "users", ["group_id"], :name => "index_users_on_group_id"

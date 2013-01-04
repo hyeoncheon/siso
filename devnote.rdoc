@@ -1,3 +1,5 @@
+= Development Note
+
 == Start Point
 
 Main reference of this project is below:
@@ -69,4 +71,102 @@ OK, then start rails server and open http://localhost:3000/auth/open_id
 this is step #1.
 
 
+=== Setup Group/User/Service
 
+
+ $ rails g model group name:string active:boolean
+      invoke  active_record
+      create    db/migrate/20130103081505_create_groups.rb
+      create    app/models/group.rb
+      invoke    test_unit
+      create      test/unit/group_test.rb
+      create      test/fixtures/groups.yml
+ $ rails g model user name:string mail:string active:boolean group:references
+      invoke  active_record
+      create    db/migrate/20130103081720_create_users.rb
+      create    app/models/user.rb
+      invoke    test_unit
+      create      test/unit/user_test.rb
+      create      test/fixtures/users.yml
+ $ rails g model service provider:string uid:string sname:string smail:string user:references
+      invoke  active_record
+      create    db/migrate/20130103081856_create_services.rb
+      create    app/models/service.rb
+      invoke    test_unit
+      create      test/unit/service_test.rb
+      create      test/fixtures/services.yml
+ $ rails g controller groups
+      create  app/controllers/groups_controller.rb
+      invoke  erb
+      create    app/views/groups
+      invoke  test_unit
+      create    test/functional/groups_controller_test.rb
+      invoke  helper
+      create    app/helpers/groups_helper.rb
+      invoke    test_unit
+      create      test/unit/helpers/groups_helper_test.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/groups.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/groups.css.scss
+ $ rails g controller users
+      create  app/controllers/users_controller.rb
+      invoke  erb
+      create    app/views/users
+      invoke  test_unit
+      create    test/functional/users_controller_test.rb
+      invoke  helper
+      create    app/helpers/users_helper.rb
+      invoke    test_unit
+      create      test/unit/helpers/users_helper_test.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/users.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/users.css.scss
+ $ rails g controller services
+      create  app/controllers/services_controller.rb
+      invoke  erb
+      create    app/views/services
+      invoke  test_unit
+      create    test/functional/services_controller_test.rb
+      invoke  helper
+      create    app/helpers/services_helper.rb
+      invoke    test_unit
+      create      test/unit/helpers/services_helper_test.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/services.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/services.css.scss
+ $ sed -i 's/:name$/:name, :null => false/' db/migrate/*groups.rb
+ $ sed -i 's/:active$/:active, :default => true/' db/migrate/*groups.rb
+ $ sed -i 's/:mail$/:mail, :null => false/' db/migrate/*users.rb
+ $ sed -i 's/:active$/:active, :default => false/' db/migrate/*users.rb
+ $ sed -i 's/:provider$/:provider, :null => false/' db/migrate/*services.rb
+ $ sed -i 's/:uid$/:uid, :null => false/' db/migrate/*services.rb
+ $ rake db:migrate
+
+some default data
+
+ $ cat >>db/seeds.db <<EOF
+
+ Group.create([{:name => 'admin'}, {:name => 'users'}, {:name => 'guest'}])
+ EOF
+ $ rake db:seed
+
+ok, then implement service callback.
+
+
+
+
+
+== Other references
+
+* {Ruby on Rails Authentication and Authorization Part 1}[http://chrislynch.info/wp/2012/02/ruby-on-rails-authentication-and-authorization-part-1/]
+* {Separating Authentication and Identity with OmniAuth}[http://blog.railsrumble.com/2010/10/08/intridea-omniauth/]
+* {Omniauth pure: Authentication with Facebook, Google, Google Apps, Twitter, Github, AOL, MyOpenID, ...}[http://communityguides.heroku.com/articles/16]
+* {#235 OmniAuth Part 1}[http://railscasts.com/episodes/235-omniauth-part-1?view=asciicast]
+* {#236 OmniAuth Part 2}[http://railscasts.com/episodes/236-omniauth-part-2?view=asciicast]
+* {OmniAuth Wiki}[https://github.com/intridea/omniauth/wiki]
