@@ -170,3 +170,8 @@ ok, then implement service callback.
 * {#235 OmniAuth Part 1}[http://railscasts.com/episodes/235-omniauth-part-1?view=asciicast]
 * {#236 OmniAuth Part 2}[http://railscasts.com/episodes/236-omniauth-part-2?view=asciicast]
 * {OmniAuth Wiki}[https://github.com/intridea/omniauth/wiki]
+
+* {Using multiple omniauth providers with omniauth-identity on the main user model}[http://bernardi.me/2012/09/using-multiple-omniauth-providers-with-omniauth-identity-on-the-main-user-model/]
+
+
+* {Autodetecting OAuth Providers with OmniAuth}[http://blog.hulihanapplications.com/browse/view/69-autodetecting-oauth-providers-with-omniauth]
