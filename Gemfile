@@ -40,3 +40,4 @@ gem 'jquery-rails'
 
 ### local
 gem 'omniauth-openid'
+gem 'doorkeeper'

@@ -1,5 +1,7 @@
 Siso::Application.routes.draw do
 
+  use_doorkeeper
+
   match '/auth/:provider/callback', :to => 'services#create'
   match '/auth/failure', :to => 'services#failure'
 

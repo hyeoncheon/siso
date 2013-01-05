@@ -185,6 +185,25 @@ main structure of create callback is:
 and finally generate/implement related helper and views.
 this is step #2.
 
+== Implement OAuth Provider
+
+=== Install and Setup Doorkeeper
+
+ $ echo "gem 'doorkeeper'" >> Gemfile
+ $ bundle install --path=$HOME/.gem
+
+then setup.
+
+ $ rails generate doorkeeper:install
+       create  config/initializers/doorkeeper.rb
+       create  config/locales/doorkeeper.en.yml
+        route  use_doorkeeper
+ <...>
+ $ rails g doorkeeper:migration
+      create  db/migrate/20130105165513_create_doorkeeper_tables.rb
+ $ rake db:migrate
+
+
 
 
 
