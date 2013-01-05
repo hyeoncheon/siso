@@ -158,6 +158,33 @@ some default data
 
 ok, then implement service callback.
 
+== Implement Authentication Callback
+
+main structure of create callback is:
+
+ def create
+   omniauth = request.env['omniauth.auth']
+   ## build auth info(ai) from provider specific data structure.
+   unless @auth = Service.find_by_provider_and_uid(ai[:provider], ai[:uid])
+     unless @user = User.find_by_mail(ai[:mail])
+       ## service and user(has same mail) not found, so register new user.
+       user = Group.find_by_name('guest').users.create(:mail => ai[:mail])
+       @auth = user.services.create(:uid => ai[:uid],...)
+     else
+       ## new auth but user exist with same mail
+       ## if current_user and current_user has same mail then add auth.
+       ## or abort with error message.
+     end
+   else
+     ## existing auth. so process login process.
+   end
+   ## build session information
+   redirect_to services_path
+ end
+
+and finally generate/implement related helper and views.
+this is step #2.
+
 
 
 
@@ -175,3 +202,24 @@ ok, then implement service callback.
 
 
 * {Autodetecting OAuth Providers with OmniAuth}[http://blog.hulihanapplications.com/browse/view/69-autodetecting-oauth-providers-with-omniauth]
+
+* {OAuth2 Valet Key for the Web}[http://www.scribd.com/doc/46297360/oauth2]
+
+* https://github.com/applicake/doorkeeper
+* https://github.com/ThoughtWorksStudios/oauth2_provider
+
+* https://github.com/assaf/rack-oauth2-server
+* https://github.com/nov/rack-oauth2
+* https://github.com/freerange/oauth2-provider
+* https://github.com/songkick/oauth2-provider
+* https://github.com/aflatter/oauth2-ruby
+
+* http://labnotes.org/2010/11/04/oauth-2-0-authorization-using-rack/
+
+* https://github.com/pelle/oauth-plugin
+* https://github.com/Gazler/Oauth2-Tutorial
+* http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-prov
+ider/
+
+stand-alone app!
+* https://github.com/Lelylan/rest-oauth2-server
