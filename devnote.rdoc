@@ -203,10 +203,70 @@ then setup.
       create  db/migrate/20130105165513_create_doorkeeper_tables.rb
  $ rake db:migrate
 
+now implement 'resource_owner_authenticator' but need to improve.
 
+ User.find_by_id(session[:user]) || redirect_to(services_path)
 
+=== Implement API
 
+we need to implement api for user information exchange.
 
+add route to config/routes.rb
+
+  namespace :api do
+    namespace :v1 do
+      get '/me' => "credentials#me"
+    end
+  end
+
+now implement simple api for user information
+
+ $ mkdir -p app/controllers/api/v1
+ $ cat app/controllers/api/v1/api_controller.rb
+ module Api::V1
+   class ApiController < ::ApplicationController
+     def current_resource_owner
+       User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+     end
+   end
+ end
+ $ cat app/controllers/api/v1/credentials_controller.rb
+ module Api::V1
+   class CredentialsController < ApiController
+     doorkeeper_for :all
+     respond_to :json
+     def me
+       respond_with current_resource_owner
+     end
+   end
+ end
+
+so now client can get user information like:
+
+ --- !map:OmniAuth::AuthHash
+ info: !map:OmniAuth::AuthHash::InfoHash
+   mail: scinix@gmail.com
+ uid: 1
+ provider: :siso
+ credentials: !map:Hashie::Mash
+   expires: true
+   expires_at: 1357487865
+   token: 2d8dc426827eb573aeb84e0e4608782be5f262dd84861a443e62682e45aa298b
+ extra: !map:Hashie::Mash
+   raw_info: !map:Hashie::Mash
+     name:
+     mail: scinix@gmail.com
+     group_id: 3
+     id: 1
+     active: false
+     created_at: "2013-01-05T17:22:12Z"
+     updated_at: "2013-01-05T17:22:12Z"
+
+sample provider app can be found at
+https://github.com/applicake/doorkeeper-provider-app
+
+* https://doorkeeper-provider.herokuapp.com/
+* http://doorkeeper-sinatra.herokuapp.com/
 
 == Other references
 
@@ -237,8 +297,7 @@ then setup.
 
 * https://github.com/pelle/oauth-plugin
 * https://github.com/Gazler/Oauth2-Tutorial
-* http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-prov
-ider/
+* http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-provider/
 
 stand-alone app!
 * https://github.com/Lelylan/rest-oauth2-server

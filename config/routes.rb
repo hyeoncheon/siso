@@ -2,6 +2,12 @@ Siso::Application.routes.draw do
 
   use_doorkeeper
 
+  namespace :api do
+    namespace :v1 do
+      get '/me' => "credentials#me"
+    end
+  end
+
   match '/auth/:provider/callback', :to => 'services#create'
   match '/auth/failure', :to => 'services#failure'
 
