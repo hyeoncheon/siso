@@ -310,6 +310,30 @@ doorkeeper:
 
 now it works we expected!
 
+=== Troubleshoot! Redirect to origin - Rewritten
+
+but above method it not pretty. I decided to using session but something is
+wrong. so just add dedicated cookie named siso_oauth_origin.
+
+doorkeeper's resource_owner_authenticator set cookie.
+
+ unless user = User.find_by_id(session[:user])
+   cookies[:siso_oauth_origin] = { :value => request.fullpath }
+   redirect_to(services_path)
+ end
+ user
+
+login front page does nothing.
+
+in authentication callback, (services_controller.rb)
+
+ next_path = cookies[:siso_oauth_origin] || services_path
+ cookies.delete :siso_oauth_origin
+ redirect_to next_path
+
+it's more simple and works fine.
+
+
 
 
 == Other references
