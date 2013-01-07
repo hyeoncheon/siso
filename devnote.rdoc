@@ -268,6 +268,50 @@ https://github.com/applicake/doorkeeper-provider-app
 * https://doorkeeper-provider.herokuapp.com/
 * http://doorkeeper-sinatra.herokuapp.com/
 
+=== Troubleshoot! Redirect to origin
+
+It works fine for me but there is some bad flow. when user not logged in on
+SiSO and this is first time to login, the flow like this:
+
+ client page -> server's oauth endpoint(doorkeeper) -> server's login page
+ -> server's login handler(omniauth strategy/callback) -> server's default page.
+
+with out login(means case of already logged in), the flow is:
+
+ client page -> server's oauth endpoint -> client page(origin)
+
+so we need to redirect from login handler to oauth endpoint that can handle
+redirect to origin properly. for this, login handler should know URL of
+oauth endpoint.
+
+so now:
+
+ client page -> server's oauth endpoint -> server's login page
+ -> server's login handler -> server's oauth endpoint again -> client
+
+for this, pass origin to omniauth strategy by add some query string. changes
+on app/views/layouts/application.html.erb is following:
+
+ -    <%= link_to "OpenID", "/auth/open_id" %>
+ +    <%= link_to "OpenID", "/auth/open_id?#{@origin}" %>
+
+this @origin is set by services controller:
+
+ # callback url for omniauth strategy. it works for open_id.
+ @origin = {"origin" => params["origin"]}.to_query if params["origin"]
+
+this params["origin"] is originally passed by resource_owner_authenticator of
+doorkeeper:
+
+ resource_owner_authenticator do
+   signin_path = services_path + "?" + {"origin" => request.fullpath}.to_query
+   User.find_by_id(session[:user]) || redirect_to(signin_path)
+ end
+
+now it works we expected!
+
+
+
 == Other references
 
 * {Ruby on Rails Authentication and Authorization Part 1}[http://chrislynch.info/wp/2012/02/ruby-on-rails-authentication-and-authorization-part-1/]
