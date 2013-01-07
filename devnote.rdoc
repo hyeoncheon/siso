@@ -338,6 +338,8 @@ it's more simple and works fine.
 
 == Other references
 
+=== Authentication Part 1
+
 * {Ruby on Rails Authentication and Authorization Part 1}[http://chrislynch.info/wp/2012/02/ruby-on-rails-authentication-and-authorization-part-1/]
 * {Separating Authentication and Identity with OmniAuth}[http://blog.railsrumble.com/2010/10/08/intridea-omniauth/]
 * {Omniauth pure: Authentication with Facebook, Google, Google Apps, Twitter, Github, AOL, MyOpenID, ...}[http://communityguides.heroku.com/articles/16]
@@ -345,12 +347,15 @@ it's more simple and works fine.
 * {#236 OmniAuth Part 2}[http://railscasts.com/episodes/236-omniauth-part-2?view=asciicast]
 * {OmniAuth Wiki}[https://github.com/intridea/omniauth/wiki]
 
+=== Authentication Advanced
+
 * {Using multiple omniauth providers with omniauth-identity on the main user model}[http://bernardi.me/2012/09/using-multiple-omniauth-providers-with-omniauth-identity-on-the-main-user-model/]
-
-
 * {Autodetecting OAuth Providers with OmniAuth}[http://blog.hulihanapplications.com/browse/view/69-autodetecting-oauth-providers-with-omniauth]
 
+=== OAuth Single Sign On
 * {OAuth2 Valet Key for the Web}[http://www.scribd.com/doc/46297360/oauth2]
+
+=== OAuth Implements
 
 * https://github.com/applicake/doorkeeper
 * https://github.com/ThoughtWorksStudios/oauth2_provider
@@ -368,4 +373,9 @@ it's more simple and works fine.
 * http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-provider/
 
 stand-alone app!
+
 * https://github.com/Lelylan/rest-oauth2-server
+
+=== Other Topics
+
+* {Sessions and cookies in Ruby on Rails}[http://www.quarkruby.com/2007/10/21/sessions-and-cookies-in-ruby-on-rails]
