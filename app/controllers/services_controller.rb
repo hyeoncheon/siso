@@ -4,13 +4,13 @@ class ServicesController < ApplicationController
     ai = Hash.new # auth info
     ai[:provider] = omniauth['provider']
 
-    logger.debug("current provider: --#{ai[:provider]}--")
+    logger.debug("DEBUG current provider: --#{ai[:provider]}--")
     if ai[:provider].to_s == 'open_id'
       ai[:name] = omniauth['info']['name']
       ai[:mail] = omniauth['info']['email']
       ai[:uid] = omniauth['uid']
     end
-    logger.debug("current mail: --#{ai[:mail]}--")
+    logger.debug("DEBUG current mail: --#{ai[:mail]}--")
 
     unless @auth = Service.find_by_provider_and_uid(ai[:provider], ai[:uid])
       unless @user = User.find_by_mail(ai[:mail])
@@ -31,17 +31,17 @@ class ServicesController < ApplicationController
     session[:name] = @auth.user.name
     session[:mail] = @auth.user.mail
     session[:auth] = @auth.id
-    redirect_to request.env['omniauth.origin'] || services_path
-    #render :text => omniauth.to_yaml
+
+    logger.debug("DEBUG cookie_origin: #{cookies[:siso_oauth_origin]}")
+    next_path = cookies[:siso_oauth_origin] || services_path
+    cookies.delete :siso_oauth_origin
+    redirect_to next_path
   end
 
   def index
     if current_user
       @services = current_user.services.order('provider asc')
     else
-      # callback url for omniauth strategy. it works for open_id.
-      @origin = {"origin" => params["origin"]}.to_query if params["origin"]
-      logger.debug("origin: #{@origin}")
       @services = []
     end
   end

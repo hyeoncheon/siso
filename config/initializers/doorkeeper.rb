@@ -5,9 +5,12 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    # we need redirection from signin_path.
-    signin_path = services_path + "?" + {"origin" => request.fullpath}.to_query
-    User.find_by_id(session[:user]) || redirect_to(signin_path)
+    # we need redirection from authentication page to origin.
+    unless user = User.find_by_id(session[:user])
+      cookies[:siso_oauth_origin] = { :value => request.fullpath }
+      redirect_to(services_path)
+    end
+    user
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
