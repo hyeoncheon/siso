@@ -31,7 +31,7 @@ class ServicesController < ApplicationController
     session[:name] = @auth.user.name
     session[:mail] = @auth.user.mail
     session[:auth] = @auth.id
-    redirect_to services_path
+    redirect_to request.env['omniauth.origin'] || services_path
     #render :text => omniauth.to_yaml
   end
 
@@ -39,6 +39,9 @@ class ServicesController < ApplicationController
     if current_user
       @services = current_user.services.order('provider asc')
     else
+      # callback url for omniauth strategy. it works for open_id.
+      @origin = {"origin" => params["origin"]}.to_query if params["origin"]
+      logger.debug("origin: #{@origin}")
       @services = []
     end
   end
