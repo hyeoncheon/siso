@@ -24,13 +24,15 @@ h2 { border-bottom: solid 2px #444; margin: 5px 0 10px; }
 div#head { background:black; color:white; 
 	text-shadow: 0px 1px 1px rgba(0, 0, 0, 1);
 	background-image: -moz-linear-gradient(#666, #000); }
-div#head h1 { display:inline-block; margin:0; padding: 15px 8px 2px; }
+div#head h1 { display:inline-block;
+	margin:0; line-height: 40px; padding: 10px 8px 0px; }
 span#head_comment { letter-spacing:-1px; }
 div#user_box { float: right; }
 div#nav_user { letter-spacing:-1px; }
 div#nav_user ul { padding:0 5px; color:#bbb; }
-div#nav_user ul * { display:inline; }
+div#nav_user ul * { display:inline; vertical-align:top; }
 div#nav_user ul * a { color:white; }
+div#nav_user ul img { border:1px solid #bbb; height:50px; }
 
 div#flash { background: #fff; }
 div.flash { padding:5px; border:2px solid #000; }

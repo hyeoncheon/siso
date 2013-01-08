@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
     ai = Hash.new # auth info
     ai[:provider] = omniauth['provider']
 
-    #logger.debug(omniauth.to_yaml)
+    # XXX logger.debug(omniauth.to_yaml)
     logger.debug("DEBUG current provider: --#{ai[:provider]}--")
     if ai[:provider].to_s == 'open_id'
       ai[:name] = omniauth['info']['name']
@@ -12,12 +12,13 @@ class ServicesController < ApplicationController
       ai[:uid] = omniauth['uid']
     elsif ai[:provider].to_s == 'ldap'
       # custom of cc-ad.
-      ai[:uid] = omniauth['extra']['raw_info']['employeenumber']
-      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10']
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber'].first
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10'].first
       ai[:mail] = omniauth['info']['email']
-      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto'].first
       ai[:phone] = omniauth['info']['phone']
       ai[:mobile] = omniauth['info']['mobile']
+      logger.debug("ldap user - uid: #{ai[:uid]} name: #{ai[:name]}")
     end
     logger.debug("DEBUG current mail: --#{ai[:mail]}--")
 
@@ -28,10 +29,16 @@ class ServicesController < ApplicationController
         @auth = user.services.create(:uid => ai[:uid],
                                      :provider => ai[:provider],
                                      :smail => ai[:mail])
+        user.update_attributes(:name => ai[:name],
+                               :image => ai[:image],
+                               :phone => ai[:phone],
+                               :mobile => ai[:mobile])
+        @auth.update_attributes(:sname => user.name)
 
         flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
       else
         flash[:error] = "new authentication for existing user."
+        ## update some informations?
       end
     else
       flash[:notice] = "welcome! #{@auth.user.mail} (from #{@auth.provider})"

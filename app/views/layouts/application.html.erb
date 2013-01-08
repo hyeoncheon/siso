@@ -13,9 +13,12 @@
   <% if user_signed_in? %>
     <div id="nav_user">
       <ul>
+        <img src="<%= url_for(:controller => "users",
+                              :action => "show_image",
+                              :id => session[:user]) %>" />
         <span><%= session[:name] %></span>
         <span><%= session[:mail] %></span>
-	<li><%= link_to "settings", services_path %></li>
+        <li><%= link_to "settings", services_path %></li>
         <li><%= link_to "signout", signout_services_path %></li>
       </ul>
     </div>

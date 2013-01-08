@@ -336,7 +336,7 @@ it's more simple and works fine.
 
 == Add OmniAuth-LDAP
 
-=== Install
+=== Install and Config
 
 simply, do:
 
@@ -370,8 +370,56 @@ finally add next to app/controllers/services_controller.rb
 
 then test it, show it works!
 
+=== Add New Attribute to User
 
+ok, ldap has more informations. so migrate db as follow:
 
+ $ rails g migration AddAttrsToUsers mobile:string phone:string image:binary
+ $ rake db:migrate
+
+then add codes to controller. (with some fixes)
+
+    elsif ai[:provider].to_s == 'ldap'
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber'].first
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10'].first
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto'].first
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
+
+    user.update_attributes(:name => ai[:name],
+                           :image => ai[:image],
+                           :phone => ai[:phone],
+                           :mobile => ai[:mobile])
+    @auth.update_attributes(:sname => user.name)
+
+additionally, set attr_accessible to user model.
+
+ attr_accessible :image, :mobile, :phone
+
+we have image binary on database so write method for it:
+
+ class UsersController < ApplicationController
+   def show_image
+     @user = User.find(params[:id])
+     send_data(@user.image,
+               :filename => @user.id.to_s + ".jpg",
+               :type => "Image/Jpeg",
+               :disposition => "inline")
+   end
+ end
+
+finally, change views,
+
+        <img src="<%= url_for(:controller => "users",
+                              :action => "show_image",
+                              :id => session[:user]) %>" />
+
+and route to above method:
+
+ match '/users/:id.jpg', :to => 'users#show_image'
+
+ok, it works!
 
 
 
