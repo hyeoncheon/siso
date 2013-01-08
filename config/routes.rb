@@ -11,7 +11,11 @@ Siso::Application.routes.draw do
   match '/auth/:provider/callback', :to => 'services#create'
   match '/auth/failure', :to => 'services#failure'
 
-  match '/users/:id.jpg', :to => 'users#show_image'
+  resources :users do
+    member do
+      get 'photo'
+    end
+  end
 
   resources :services, :only => [:index, :create, :destroy] do
     collection do

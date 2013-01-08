@@ -13,8 +13,7 @@
   <% if user_signed_in? %>
     <div id="nav_user">
       <ul>
-        <img src="<%= url_for(:controller => "users",
-                              :action => "show_image",
+        <img src="<%= url_for(:controller => "users", :action => "photo",
                               :id => session[:user]) %>" />
         <span><%= session[:name] %></span>
         <span><%= session[:mail] %></span>
@@ -42,6 +41,7 @@
     <h2 class="siso_dialog_head">Login</h2>
     <div class="siso_dialog_body">
       <span>Signin with</span>
+      <%= link_to "LDAP", "/auth/ldap" %>,
       <%= link_to "OpenID", "/auth/open_id" %>
       or
       <%= link_to "Other", signin_services_path %>

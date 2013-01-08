@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  def show_image
+  def photo
     @user = User.find(params[:id])
     send_data(@user.image,
-              :filename => @user.id.to_s + ".jpg",
+              :filename => "profile.jpg",
               :type => "Image/Jpeg",
               :disposition => "inline")
   end

@@ -421,6 +421,26 @@ and route to above method:
 
 ok, it works!
 
+=== Some more Improvement
+
+when we add binary image to model, credentials_controller does not work.
+(and in fact, it is not fully implemented.) so change something.
+
+ user = current_resource_owner
+ user.image = request.protocol + request.env['HTTP_HOST'] +
+   photo_user_path(user.id)
+ respond_with user
+
+as seen, method name is changed from show_iamge to photo. and some more.
+so routes.rb also changed.
+
+ resources :users do
+   member do
+     get 'photo'
+   end
+ end
+
+
 
 
 
