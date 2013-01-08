@@ -334,6 +334,46 @@ in authentication callback, (services_controller.rb)
 it's more simple and works fine.
 
 
+== Add OmniAuth-LDAP
+
+=== Install
+
+simply, do:
+
+ $ echo "gem 'omniauth-ldap'" >> Gemfile
+ $ bundle install --path=$HOME/.gem
+
+then add following to config/initializers/omniauth.rb
+
+  provider :ldap,
+    :title => 'EXAMPLE.NET',
+    :host => 'ldap.example.com',
+    :port => 389,
+    :method => :plain,
+    :base => 'ou=Humans,dc=example,dc=net',
+    :uid => 'mail',
+    :password => 'bind_dn_s_password_here',
+    :try_sasl => false,
+    :bind_dn => 'admin@example.net'
+
+finally add next to app/controllers/services_controller.rb
+
+    elsif ai[:provider].to_s == 'ldap'
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber']
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10']
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto']
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
+
+:image, :phone, :mobile are new to ldap and not currently used.
+
+then test it, show it works!
+
+
+
+
+
 
 
 == Other references

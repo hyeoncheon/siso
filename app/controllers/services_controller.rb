@@ -4,11 +4,20 @@ class ServicesController < ApplicationController
     ai = Hash.new # auth info
     ai[:provider] = omniauth['provider']
 
+    #logger.debug(omniauth.to_yaml)
     logger.debug("DEBUG current provider: --#{ai[:provider]}--")
     if ai[:provider].to_s == 'open_id'
       ai[:name] = omniauth['info']['name']
       ai[:mail] = omniauth['info']['email']
       ai[:uid] = omniauth['uid']
+    elsif ai[:provider].to_s == 'ldap'
+      # custom of cc-ad.
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber']
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10']
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto']
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
     end
     logger.debug("DEBUG current mail: --#{ai[:mail]}--")
 
