@@ -41,6 +41,16 @@ div.error { background:#fdd; color:#500; }
 
 div#body { padding:10px; }
 
+div.float-box { float:right; }
+
+div#user-info { padding:5px; background:#ee9; border:1px solid #999;
+	width:300px;
+	border-radius: 5px;
+}
+#user-profile div {text-align: right; }
+#user-info img { height:120px; float:left; margin-right:5px; }
+#user-info ul li { list-style:none; }
+
 div.service_in_use { padding:10px; margin:10px; border:1px dashed #aaa;
 	white-space:nowrap; display:inline-block; width:450px;
 	background:#eee; }
