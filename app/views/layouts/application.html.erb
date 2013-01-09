@@ -13,8 +13,12 @@
   <% if user_signed_in? %>
     <div id="nav_user">
       <ul>
+        <% if current_user.image == nil %>
+        <%= image_tag current_user.gravatar_url %>
+        <% else %>
         <img src="<%= url_for(:controller => "users", :action => "photo",
                               :id => session[:user]) %>" />
+        <% end %>
         <span><%= session[:name] %></span>
         <span><%= session[:mail] %></span>
         <li><%= link_to "settings", services_path %></li>

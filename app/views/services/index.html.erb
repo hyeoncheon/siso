@@ -1,8 +1,12 @@
 <div id="user-info" class="users float-box">
   <% if user_signed_in? %>
   <div id="user-profile">
+    <% if current_user.image == nil %>
+      <%= image_tag current_user.gravatar_url(:size => 120) %>
+    <% else %>
     <img src="<%= url_for(:controller => "users", :action => "photo",
                           :id => session[:user]) %>" />
+    <% end %>
     <div>
       <ul>
         <li><%= session[:name] %> &lt;<%= session[:mail] %>&gt;</li>

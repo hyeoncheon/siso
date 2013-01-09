@@ -28,14 +28,21 @@ class ServicesController < ApplicationController
         user = Group.find_by_name('guest').users.create(:mail => ai[:mail])
         @auth = user.services.create(:uid => ai[:uid],
                                      :provider => ai[:provider],
+                                     :sname => ai[:sname],
                                      :smail => ai[:mail])
         user.update_attributes(:name => ai[:name],
                                :image => ai[:image],
                                :phone => ai[:phone],
                                :mobile => ai[:mobile])
-        @auth.update_attributes(:sname => user.name)
-
-        flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
+        if user.id == 1
+          user.update_attributes(:group_id => Group.find_by_name('admin').id,
+                                 :active => true)
+          flash[:notice] = "The first user #{user.mail}" +
+            " registered and auto activated!" +
+            " You are Super User for this site!"
+        else
+          flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
+        end
       else
         flash[:error] = "new authentication for existing user."
         ## update some informations?
