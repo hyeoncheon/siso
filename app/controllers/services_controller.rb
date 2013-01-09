@@ -28,7 +28,7 @@ class ServicesController < ApplicationController
         user = Group.find_by_name('guest').users.create(:mail => ai[:mail])
         @auth = user.services.create(:uid => ai[:uid],
                                      :provider => ai[:provider],
-                                     :sname => ai[:sname],
+                                     :sname => ai[:name],
                                      :smail => ai[:mail])
         user.update_attributes(:name => ai[:name],
                                :image => ai[:image],
@@ -45,10 +45,11 @@ class ServicesController < ApplicationController
         end
       else
         flash[:error] = "new authentication for existing user."
-        ## update some informations?
       end
     else
       flash[:notice] = "welcome! #{@auth.user.mail} (from #{@auth.provider})"
+      # update service information automatically. is it right?
+      @auth.update_attributes(:sname => ai[:name], :smail => ai[:mail])
     end
     session[:user] = @auth.user.id
     session[:name] = @auth.user.name

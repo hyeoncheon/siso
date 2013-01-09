@@ -15,6 +15,7 @@
         <li><%= (Date.today - current_user.created_at.to_datetime).to_f %></li>
         <li>Since: <%= current_user.created_at.strftime("%Y-%m-%d") %></li>
         <li><%= current_user.active ? "Active" : "Inactive" %> User</li>
+        <li>Member of <%= current_user.group.name %></li>
       </ul>
     </div>
   </div>
@@ -28,7 +29,7 @@
   <% @services.each do |service| %>  
     <div class="service_in_use round">  
       <div class="service_img">
-      <% if ['facebook','google','twitter'].index(service.provider) %>
+      <% if ['facebook','google','twitter','ldap'].index(service.provider) %>
         <%= image_tag "/icons/64s/#{service.provider}.png", :size => "64x64" %>
       <% else %>
         <%= image_tag "/icons/64s/openid.png", :size => "64x64" %>
