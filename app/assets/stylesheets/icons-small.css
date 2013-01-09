@@ -1,0 +1,12 @@
+
+.ic-inline {
+	background-image: url("/icons/system/icons-mini.png");
+	background-repeat: no-repeat;
+	padding: 0 9px;
+	position: relative;
+	background-position: -280px -227px;	/* default to user */
+}
+
+.ic-user { background-position: -280px -227px; }
+.ic-cap { background-position: -335px -34px; }
+.ic-admin { background-position: -143px -7px; }

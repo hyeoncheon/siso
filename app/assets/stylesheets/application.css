@@ -12,43 +12,48 @@
  *= require_tree .
  */
 
-* {font-family: }
+* {font-family: 서울남산체, 나눔고딕, "맑은 고딕", "Malgun Gothic"; }
 html,body { height:100%; margin:0; padding:0; border:0; }
 body { background:#ddd; background-image: -moz-linear-gradient(#fff, #999); }
 body { padding:10px; }
+body { background-image: url("/images/orion.png");
+	background-position: right bottom;
+	background-repeat: no-repeat;
+	background-size: 150px;
+}
 
 h1,h2,h3,h4,h5 { margin:5px 0; text-shadow: 0px 1px 1px rgba(0, 0, 0, 1); }
 a { text-decoration:none; color:blue; }
 h2 { border-bottom: solid 2px #444; margin: 5px 0 10px; }
 
-div#head { background:black; color:white; 
+div#page-head { background:black; color:white; 
 	text-shadow: 0px 1px 1px rgba(0, 0, 0, 1);
 	background-image: -moz-linear-gradient(#666, #000); }
-div#head h1 { display:inline-block;
+h1#prod-title { display:inline-block;
 	margin:0; line-height: 40px; padding: 10px 8px 0px; }
-span#head_comment { letter-spacing:-1px; }
-div#user_box { float: right; }
-div#nav_user { letter-spacing:-1px; }
-div#nav_user ul { padding:0 5px; color:#bbb; }
-div#nav_user ul * { display:inline; vertical-align:top; }
-div#nav_user ul * a { color:white; }
-div#nav_user ul img { border:1px solid #bbb; height:50px; }
+span#prod-comment { letter-spacing:-1px; }
+div#info-box { float: right; }
+div#info-user { letter-spacing:-1px; }
+div#info-user ul { padding:0 5px; color:#bbb; }
+div#info-user ul * { display:inline; vertical-align:top; }
+div#info-user ul * a { color:white; }
+div#info-user ul img { border:1px solid #bbb; height:50px; }
 
 div#flash { background: #fff; }
 div.flash { padding:5px; border:2px solid #000; }
 div.notice { background:#cfd; color:#050; }
 div.error { background:#fdd; color:#500; }
 
-div#body { padding:10px; }
+div#page-body { padding:10px; }
 
 div.float-box { float:right; }
 
-div#user-info { padding:5px; background:#ee9; border:1px solid #999;
-	width:300px;
+div#user-info { padding:5px; background:#eeb; border:1px solid #999;
+	min-width:300px; font-size: 0.9em;
 	border-radius: 5px;
 }
-#user-profile div {text-align: right; }
-#user-info img { height:120px; float:left; margin-right:5px; }
+#user-profile div {text-align:right; color:#555; }
+#user-info img { height:100px; float:left; margin-right:5px; }
 #user-info ul li { list-style:none; }
 
 div.service_in_use { padding:10px; margin:10px; border:1px dashed #aaa;
@@ -66,7 +71,7 @@ body,* { margin: 0; padding: 0; border: 0 none;
 	font-weight: inherit; vertical-align: baseline;
 }
 
-.siso_dialog {
+.siso-dialog {
 	background-color: #F9F9F9;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.17), 0 0 100px 50px #FFFFFF;
 	text-align: center;
@@ -76,7 +81,7 @@ body,* { margin: 0; padding: 0; border: 0 none;
 	max-width: 390px;
 }
 
-.siso_dialog_head {
+.siso-dialog-head {
 	margin: 0;
 	border-bottom-width: 1px;
 	border-top-left-radius: 5px;
@@ -91,6 +96,16 @@ body,* { margin: 0; padding: 0; border: 0 none;
 	color: #eee;
 }
 
-.siso_dialog_body { color: #444; padding: 25px 30px; }
+.siso-dialog-body { color: #444; padding: 25px 30px; }
 
-#login_box { margin-top:100px; }
+#login-dialog { margin-top:100px; }
+
+
+div#outter-frame { min-height: 100%; height: auto !important; height: 100%;
+	margin: 0 auto -70px; }
+div#page-tail {
+	border-top:1px solid #999; margin: 0 150px 10px 10px; padding: 5px 0;
+	height: 60px; position: relative;
+	text-align:right; color:#888;
+	font-size: 0.8em; }
+div#page-tail ul li { list-style:none; }

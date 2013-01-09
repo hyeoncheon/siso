@@ -1,4 +1,4 @@
-<div id="user-info" class="users float-box">
+<div id="user-info" class="float-box">
   <% if user_signed_in? %>
   <div id="user-profile">
     <% if current_user.image == nil %>
@@ -11,7 +11,10 @@
       <ul>
         <li><%= session[:name] %> &lt;<%= session[:mail] %>&gt;</li>
         <li><%= current_user.phone %></li>
-        <li><%= current_user.mobile %></li>
+	<li><%= current_user.mobile %></li>
+      </ul>
+      <br/>
+      <ul>
         <li><%= (Date.today - current_user.created_at.to_datetime).to_f %></li>
         <li>Since: <%= current_user.created_at.strftime("%Y-%m-%d") %></li>
         <li><%= current_user.active ? "Active" : "Inactive" %> User</li>
