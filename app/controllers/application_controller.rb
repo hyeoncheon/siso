@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   helper_method :user_signed_in?
+  helper_method :is_admin?
 
   private
     def current_user
@@ -12,6 +13,10 @@ class ApplicationController < ActionController::Base
 
     def user_signed_in?
       return 1 if current_user
+    end
+
+    def is_admin_session?
+      return 1 if current_user.group.name == 'admin'
     end
 end
 # vim: set ts=2 sw=2 expandtab:

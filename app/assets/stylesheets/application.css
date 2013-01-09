@@ -14,13 +14,18 @@
 
 * {font-family: 서울남산체, 나눔고딕, "맑은 고딕", "Malgun Gothic"; }
 html,body { height:100%; margin:0; padding:0; border:0; }
-body { background:#ddd; background-image: -moz-linear-gradient(#fff, #999); }
 body { padding:10px; }
-body { background-image: url("/images/orion.png");
+#outter-frame { background:#ddd; }
+#outter-frame { background-image: -moz-linear-gradient(#fff, #999); }
+#outter-frame { background-image: url("/images/orion.png");
 	background-position: right bottom;
 	background-repeat: no-repeat;
 	background-size: 150px;
 }
+
+.align-right { text-align:right; }
+.align-left { text-align:left; }
+.float-right { float:right; }
 
 h1,h2,h3,h4,h5 { margin:5px 0; text-shadow: 0px 1px 1px rgba(0, 0, 0, 1); }
 a { text-decoration:none; color:blue; }
@@ -62,6 +67,15 @@ div.service_in_use { padding:10px; margin:10px; border:1px dashed #aaa;
 div.service_in_use * { display:inline; }
 div.service_img { float:left; margin-right:10px; }
 div.service_userdata span { color:green; }
+
+div.object-box { padding:10px; margin:10px; border:1px dashed #aaa;
+	white-space:nowrap; display:inline-block; width:450px;
+	background:#eee; }
+div.object-image { float:left; margin-right:10px; }
+div.object-image img { height:120px; }
+div.object-data ul { display:inline-block; }
+div.object-data ul li { list-style:none; }
+img.info-provider { float:right; }
 
 /* copy... */
 
@@ -108,4 +122,5 @@ div#page-tail {
 	height: 60px; position: relative;
 	text-align:right; color:#888;
 	font-size: 0.8em; }
+div#page-tail-placeholder { height:60px; }
 div#page-tail ul li { list-style:none; }
