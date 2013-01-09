@@ -4,13 +4,23 @@ class ServicesController < ApplicationController
     ai = Hash.new # auth info
     ai[:provider] = omniauth['provider']
 
-    logger.debug("current provider: --#{ai[:provider]}--")
+    # XXX logger.debug(omniauth.to_yaml)
+    logger.debug("DEBUG current provider: --#{ai[:provider]}--")
     if ai[:provider].to_s == 'open_id'
       ai[:name] = omniauth['info']['name']
       ai[:mail] = omniauth['info']['email']
       ai[:uid] = omniauth['uid']
+    elsif ai[:provider].to_s == 'ldap'
+      # custom of cc-ad.
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber'].first
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10'].first
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto'].first
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
+      logger.debug("ldap user - uid: #{ai[:uid]} name: #{ai[:name]}")
     end
-    logger.debug("current mail: --#{ai[:mail]}--")
+    logger.debug("DEBUG current mail: --#{ai[:mail]}--")
 
     unless @auth = Service.find_by_provider_and_uid(ai[:provider], ai[:uid])
       unless @user = User.find_by_mail(ai[:mail])
@@ -19,10 +29,16 @@ class ServicesController < ApplicationController
         @auth = user.services.create(:uid => ai[:uid],
                                      :provider => ai[:provider],
                                      :smail => ai[:mail])
+        user.update_attributes(:name => ai[:name],
+                               :image => ai[:image],
+                               :phone => ai[:phone],
+                               :mobile => ai[:mobile])
+        @auth.update_attributes(:sname => user.name)
 
         flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
       else
         flash[:error] = "new authentication for existing user."
+        ## update some informations?
       end
     else
       flash[:notice] = "welcome! #{@auth.user.mail} (from #{@auth.provider})"
@@ -31,8 +47,11 @@ class ServicesController < ApplicationController
     session[:name] = @auth.user.name
     session[:mail] = @auth.user.mail
     session[:auth] = @auth.id
-    redirect_to services_path
-    #render :text => omniauth.to_yaml
+
+    logger.debug("DEBUG cookie_origin: #{cookies[:siso_oauth_origin]}")
+    next_path = cookies[:siso_oauth_origin] || services_path
+    cookies.delete :siso_oauth_origin
+    redirect_to next_path
   end
 
   def index

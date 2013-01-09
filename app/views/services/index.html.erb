@@ -1,4 +1,23 @@
-<div id="services_manage" class="services">
+<div id="user-info" class="users float-box">
+  <% if user_signed_in? %>
+  <div id="user-profile">
+    <img src="<%= url_for(:controller => "users", :action => "photo",
+                          :id => session[:user]) %>" />
+    <div>
+      <ul>
+        <li><%= session[:name] %> &lt;<%= session[:mail] %>&gt;</li>
+        <li><%= current_user.phone %></li>
+        <li><%= current_user.mobile %></li>
+        <li><%= (Date.today - current_user.created_at.to_datetime).to_f %></li>
+        <li>Since: <%= current_user.created_at.strftime("%Y-%m-%d") %></li>
+        <li><%= current_user.active ? "Active" : "Inactive" %> User</li>
+      </ul>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<div id="services_manage" class="services paragraph">
   <h2>Authentication Services - Settings</h2>
   <h3>Your current Authentications:</h3>
 
