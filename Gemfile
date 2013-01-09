@@ -40,3 +40,5 @@ gem 'jquery-rails'
 
 ### local
 gem 'omniauth-openid'
+gem 'omniauth-ldap'
+gem 'doorkeeper'

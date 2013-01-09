@@ -3,4 +3,5 @@ class User < ActiveRecord::Base
   has_many :services
 
   attr_accessible :active, :mail, :name
+  attr_accessible :image, :mobile, :phone
 end

@@ -185,11 +185,268 @@ main structure of create callback is:
 and finally generate/implement related helper and views.
 this is step #2.
 
+== Implement OAuth Provider
+
+=== Install and Setup Doorkeeper
+
+ $ echo "gem 'doorkeeper'" >> Gemfile
+ $ bundle install --path=$HOME/.gem
+
+then setup.
+
+ $ rails generate doorkeeper:install
+       create  config/initializers/doorkeeper.rb
+       create  config/locales/doorkeeper.en.yml
+        route  use_doorkeeper
+ <...>
+ $ rails g doorkeeper:migration
+      create  db/migrate/20130105165513_create_doorkeeper_tables.rb
+ $ rake db:migrate
+
+now implement 'resource_owner_authenticator' but need to improve.
+
+ User.find_by_id(session[:user]) || redirect_to(services_path)
+
+=== Implement API
+
+we need to implement api for user information exchange.
+
+add route to config/routes.rb
+
+  namespace :api do
+    namespace :v1 do
+      get '/me' => "credentials#me"
+    end
+  end
+
+now implement simple api for user information
+
+ $ mkdir -p app/controllers/api/v1
+ $ cat app/controllers/api/v1/api_controller.rb
+ module Api::V1
+   class ApiController < ::ApplicationController
+     def current_resource_owner
+       User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+     end
+   end
+ end
+ $ cat app/controllers/api/v1/credentials_controller.rb
+ module Api::V1
+   class CredentialsController < ApiController
+     doorkeeper_for :all
+     respond_to :json
+     def me
+       respond_with current_resource_owner
+     end
+   end
+ end
+
+so now client can get user information like:
+
+ --- !map:OmniAuth::AuthHash
+ info: !map:OmniAuth::AuthHash::InfoHash
+   mail: scinix@gmail.com
+ uid: 1
+ provider: :siso
+ credentials: !map:Hashie::Mash
+   expires: true
+   expires_at: 1357487865
+   token: 2d8dc426827eb573aeb84e0e4608782be5f262dd84861a443e62682e45aa298b
+ extra: !map:Hashie::Mash
+   raw_info: !map:Hashie::Mash
+     name:
+     mail: scinix@gmail.com
+     group_id: 3
+     id: 1
+     active: false
+     created_at: "2013-01-05T17:22:12Z"
+     updated_at: "2013-01-05T17:22:12Z"
+
+sample provider app can be found at
+https://github.com/applicake/doorkeeper-provider-app
+
+* https://doorkeeper-provider.herokuapp.com/
+* http://doorkeeper-sinatra.herokuapp.com/
+
+=== Troubleshoot! Redirect to origin
+
+It works fine for me but there is some bad flow. when user not logged in on
+SiSO and this is first time to login, the flow like this:
+
+ client page -> server's oauth endpoint(doorkeeper) -> server's login page
+ -> server's login handler(omniauth strategy/callback) -> server's default page.
+
+with out login(means case of already logged in), the flow is:
+
+ client page -> server's oauth endpoint -> client page(origin)
+
+so we need to redirect from login handler to oauth endpoint that can handle
+redirect to origin properly. for this, login handler should know URL of
+oauth endpoint.
+
+so now:
+
+ client page -> server's oauth endpoint -> server's login page
+ -> server's login handler -> server's oauth endpoint again -> client
+
+for this, pass origin to omniauth strategy by add some query string. changes
+on app/views/layouts/application.html.erb is following:
+
+ -    <%= link_to "OpenID", "/auth/open_id" %>
+ +    <%= link_to "OpenID", "/auth/open_id?#{@origin}" %>
+
+this @origin is set by services controller:
+
+ # callback url for omniauth strategy. it works for open_id.
+ @origin = {"origin" => params["origin"]}.to_query if params["origin"]
+
+this params["origin"] is originally passed by resource_owner_authenticator of
+doorkeeper:
+
+ resource_owner_authenticator do
+   signin_path = services_path + "?" + {"origin" => request.fullpath}.to_query
+   User.find_by_id(session[:user]) || redirect_to(signin_path)
+ end
+
+now it works we expected!
+
+=== Troubleshoot! Redirect to origin - Rewritten
+
+but above method it not pretty. I decided to using session but something is
+wrong. so just add dedicated cookie named siso_oauth_origin.
+
+doorkeeper's resource_owner_authenticator set cookie.
+
+ unless user = User.find_by_id(session[:user])
+   cookies[:siso_oauth_origin] = { :value => request.fullpath }
+   redirect_to(services_path)
+ end
+ user
+
+login front page does nothing.
+
+in authentication callback, (services_controller.rb)
+
+ next_path = cookies[:siso_oauth_origin] || services_path
+ cookies.delete :siso_oauth_origin
+ redirect_to next_path
+
+it's more simple and works fine.
+
+
+== Add OmniAuth-LDAP
+
+=== Install and Config
+
+simply, do:
+
+ $ echo "gem 'omniauth-ldap'" >> Gemfile
+ $ bundle install --path=$HOME/.gem
+
+then add following to config/initializers/omniauth.rb
+
+  provider :ldap,
+    :title => 'EXAMPLE.NET',
+    :host => 'ldap.example.com',
+    :port => 389,
+    :method => :plain,
+    :base => 'ou=Humans,dc=example,dc=net',
+    :uid => 'mail',
+    :password => 'bind_dn_s_password_here',
+    :try_sasl => false,
+    :bind_dn => 'admin@example.net'
+
+finally add next to app/controllers/services_controller.rb
+
+    elsif ai[:provider].to_s == 'ldap'
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber']
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10']
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto']
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
+
+:image, :phone, :mobile are new to ldap and not currently used.
+
+then test it, show it works!
+
+=== Add New Attribute to User
+
+ok, ldap has more informations. so migrate db as follow:
+
+ $ rails g migration AddAttrsToUsers mobile:string phone:string image:binary
+ $ rake db:migrate
+
+then add codes to controller. (with some fixes)
+
+    elsif ai[:provider].to_s == 'ldap'
+      ai[:uid] = omniauth['extra']['raw_info']['employeenumber'].first
+      ai[:name] = omniauth['extra']['raw_info']['extensionattribute10'].first
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['extra']['raw_info']['thumbnailphoto'].first
+      ai[:phone] = omniauth['info']['phone']
+      ai[:mobile] = omniauth['info']['mobile']
+
+    user.update_attributes(:name => ai[:name],
+                           :image => ai[:image],
+                           :phone => ai[:phone],
+                           :mobile => ai[:mobile])
+    @auth.update_attributes(:sname => user.name)
+
+additionally, set attr_accessible to user model.
+
+ attr_accessible :image, :mobile, :phone
+
+we have image binary on database so write method for it:
+
+ class UsersController < ApplicationController
+   def show_image
+     @user = User.find(params[:id])
+     send_data(@user.image,
+               :filename => @user.id.to_s + ".jpg",
+               :type => "Image/Jpeg",
+               :disposition => "inline")
+   end
+ end
+
+finally, change views,
+
+        <img src="<%= url_for(:controller => "users",
+                              :action => "show_image",
+                              :id => session[:user]) %>" />
+
+and route to above method:
+
+ match '/users/:id.jpg', :to => 'users#show_image'
+
+ok, it works!
+
+=== Some more Improvement
+
+when we add binary image to model, credentials_controller does not work.
+(and in fact, it is not fully implemented.) so change something.
+
+ user = current_resource_owner
+ user.image = request.protocol + request.env['HTTP_HOST'] +
+   photo_user_path(user.id)
+ respond_with user
+
+as seen, method name is changed from show_iamge to photo. and some more.
+so routes.rb also changed.
+
+ resources :users do
+   member do
+     get 'photo'
+   end
+ end
+
 
 
 
 
 == Other references
+
+=== Authentication Part 1
 
 * {Ruby on Rails Authentication and Authorization Part 1}[http://chrislynch.info/wp/2012/02/ruby-on-rails-authentication-and-authorization-part-1/]
 * {Separating Authentication and Identity with OmniAuth}[http://blog.railsrumble.com/2010/10/08/intridea-omniauth/]
@@ -198,12 +455,15 @@ this is step #2.
 * {#236 OmniAuth Part 2}[http://railscasts.com/episodes/236-omniauth-part-2?view=asciicast]
 * {OmniAuth Wiki}[https://github.com/intridea/omniauth/wiki]
 
+=== Authentication Advanced
+
 * {Using multiple omniauth providers with omniauth-identity on the main user model}[http://bernardi.me/2012/09/using-multiple-omniauth-providers-with-omniauth-identity-on-the-main-user-model/]
-
-
 * {Autodetecting OAuth Providers with OmniAuth}[http://blog.hulihanapplications.com/browse/view/69-autodetecting-oauth-providers-with-omniauth]
 
+=== OAuth Single Sign On
 * {OAuth2 Valet Key for the Web}[http://www.scribd.com/doc/46297360/oauth2]
+
+=== OAuth Implements
 
 * https://github.com/applicake/doorkeeper
 * https://github.com/ThoughtWorksStudios/oauth2_provider
@@ -218,8 +478,12 @@ this is step #2.
 
 * https://github.com/pelle/oauth-plugin
 * https://github.com/Gazler/Oauth2-Tutorial
-* http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-prov
-ider/
+* http://unhandledexpression.com/2011/06/02/rails-and-oauth-plugin-part-1-the-provider/
 
 stand-alone app!
+
 * https://github.com/Lelylan/rest-oauth2-server
+
+=== Other Topics
+
+* {Sessions and cookies in Ruby on Rails}[http://www.quarkruby.com/2007/10/21/sessions-and-cookies-in-ruby-on-rails]
