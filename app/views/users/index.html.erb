@@ -6,10 +6,10 @@
     <div class="object-box round">  
       <div class="object-image">
       <% if user.image == nil %>
-        <%= image_tag user.gravatar_url(:size => 120) %>
+        <%= image_tag user.gravatar_url(:size => 120), :class => 'user-photo' %>
       <% else %>
-      <img src="<%= url_for(:controller => "users", :action => "photo",
-                            :id => user) %>" />
+        <img src="<%= url_for(:controller => "users", :action => "photo",
+                              :id => user) %>" class="user-photo" />
       <% end %>
       </div>
 
