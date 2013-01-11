@@ -1,5 +1,4 @@
 class ServicesController < ApplicationController
-  layout "bootstrapped"
   def create
     omniauth = request.env['omniauth.auth']
     ai = Hash.new # auth info

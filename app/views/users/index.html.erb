@@ -1,51 +1,46 @@
-<div id="controller-body" class="services paragraph">
-  <h2>User Management</h2>
-  <h3>Registered Users:</h3>
-
-  <% @users.each do |user| %>  
-    <div class="object-box round">  
-      <div class="object-image">
-      <% if user.image == nil %>
-        <%= image_tag user.gravatar_url(:size => 120), :class => 'user-photo' %>
-      <% else %>
-        <img src="<%= url_for(:controller => "users", :action => "photo",
-                              :id => user) %>" class="user-photo" />
-      <% end %>
-      </div>
-
-      <%= image_tag "/icons/64s/#{user.services.first.provider}.png",
-      :size => "32x32", :class => "info-provider" %>
-      <div class="object-data">
-        <ul class="align-right">
-          <li>uid</li>
-          <li>name</li>
-          <li>mail</li>
-          <li>phone</li>
-          <li>mobile</li>
-          <li>birthday</li>
-          <li>status</li>
-          <li>group</li>
-        </ul>
-        <ul class="align-left">
-          <li>: <%= user.id if user.id != '' %>
-          <% if session[:user] == user.id %>
-            <span class="highlight-1">You!</span>
-          <% else %>
-            <%= link_to "Unregister", user, :confirm => 'Are you sure you want to remove this authentication?', :method => :delete, :class => "remove" %>
-          <% end %>
-          </li>
-          <li>: <%= user.name if user.name != '' %></li>
-          <li>: <%= user.mail if user.mail != '' %></li>
-          <li>: <%= user.phone %></li>
-          <li>: <%= user.mobile %></li>
-          <li>: <%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></li>
-          <li>: <%= user.active ? "Active" : "Inactive" %></li>
-          <li>:
-          <span class="ic-inline ic-<%= user.group.name %>"></span>
-          <%= user.group.name %> 
-          </li>
-        </ul>
-      </div>
-    </div>  
-  <% end %>
+<%- model_class = User -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:mail) %></th>
+      <th><%= model_class.human_attribute_name(:active) %></th>
+      <th><%= model_class.human_attribute_name(:group_id) %></th>
+      <th><%= model_class.human_attribute_name(:mobile) %></th>
+      <th><%= model_class.human_attribute_name(:phone) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.id, user_path(user) %></td>
+        <td><%= user.name %></td>
+        <td><%= user.mail %></td>
+        <td><%= user.active %></td>
+        <td><%= user.group_id %></td>
+        <td><%= user.mobile %></td>
+        <td><%= user.phone %></td>
+        <td><%=l user.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_user_path(user), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      user_path(user),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_user_path,
+            :class => 'btn btn-primary' %>

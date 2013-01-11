@@ -440,6 +440,35 @@ so routes.rb also changed.
    end
  end
 
+== OK, Now UI
+
+=== Install and Setup bootstrap
+
+ $ sed -i "s/# gem 'therubyracer/gem 'therubyracer/" Gemfile
+ $ sed -i "/uglifier/a\  gem 'less-rails'" Gemfile
+ $ sed -i "/less-rails/a\  gem 'twitter-bootstrap-rails'," Gemfile
+ $ sed -i "/bootstrap/a\    :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'" Gemfile
+ $ bundle install --path=$HOME/.gem
+ $ rails generate bootstrap:install less
+      insert  app/assets/javascripts/application.js
+      create  app/assets/javascripts/bootstrap.js.coffee
+      create  app/assets/stylesheets/bootstrap_and_overrides.css.less
+        gsub  app/assets/stylesheets/application.css
+        gsub  app/assets/stylesheets/application.css
+ $ rails g bootstrap:layout bootstrapped
+      create  app/views/layouts/bootstrapped.html.erb
+
+now, new layout bootstrapped can be used on view.
+
+ $ rails g bootstrap:themed users -f
+      create  app/views/users/show.html.erb
+      create  app/views/users/edit.html.erb
+       force  app/views/users/index.html.erb
+      create  app/views/users/new.html.erb
+      create  app/views/users/_form.html.erb
+
+
+
 
 
 

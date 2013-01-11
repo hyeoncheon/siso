@@ -12,6 +12,7 @@
  *= require_tree .
  */
 
+/*
 * {font-family: 서울남산체, 나눔고딕, "맑은 고딕", "Malgun Gothic"; }
 html,body { height:100%; margin:0; padding:0; border:0; }
 body { padding:10px; }
@@ -82,6 +83,7 @@ img.info-provider { float:right; }
 
 /* copy... */
 
+/*
 * { -moz-box-sizing: border-box; }
 
 body,* { margin: 0; padding: 0; border: 0 none;
@@ -127,3 +129,4 @@ div#page-tail {
 	font-size: 0.8em; }
 div#page-tail-placeholder { height:60px; }
 div#page-tail ul li { list-style:none; }
+*/
