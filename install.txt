@@ -1,0 +1,31 @@
+
+
+### install required gems.
+hyeoncheon.siso$ bundle install
+...
+Installing rack (1.4.5) 
+Installing multi_json (1.10.1) 
+Installing doorkeeper (1.3.0) 
+Installing gravtastic (3.2.6) 
+Installing hashie (2.1.1) 
+Installing net-ldap (0.3.1) 
+Installing omniauth (1.2.1) 
+Installing pyu-ruby-sasl (0.0.3.3) 
+Installing rubyntlm (0.1.1) 
+Installing omniauth-ldap (1.0.4) 
+Installing ruby-openid (2.5.0) 
+Installing rack-openid (1.3.1) 
+Installing omniauth-openid (1.0.1) 
+...
+Your bundle is complete!
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+hyeoncheon.siso$ 
+
+### initialize database
+hyeoncheon.siso$ rake db:setup
+...
+hyeoncheon.siso$ 
+
+### update config/initializers/omniauth.rb according to your environment.
+
+
