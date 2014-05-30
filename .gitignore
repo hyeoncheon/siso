@@ -13,3 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/_backups
+
+# ignore site specific configuration from .dist file.
+/config/initializers/omniauth.rb
