@@ -1,0 +1,161 @@
+// hyeoncheon theme - black sky. (default)
+//
+// vim:set ts=2 sw=2:
+
+/* variables... */
+$font-stack:	서울남산체, 나눔고딕, "맑은 고딕", "Malgun Gothic";
+
+$color-back:	#222;
+$color-bar: #111;
+$color-border:	#444;
+
+$color-title: #111;
+$color-text:	#bbb;
+$color-link:	#44d;
+
+$color-boxtext:	#aaa;
+$color-boxback:	#333;
+$color-boxborder:	#666;
+
+$color-hltext:	#002;
+$color-hlback:	#99a;
+
+
+/* style */
+body {
+	font-family: $font-stack;
+	font-size: 11pt;
+	color: $color-text;
+	background: $color-back;
+}
+a { text-decoration:none; color: $color-link; }
+
+/* structure */
+html,body { height:100%; margin:0; padding:0; border:0; }
+
+body {
+	div.hc-main-wrapper {
+		min-height: 100%; height: auto !important; height: 100%;
+		margin: 0 auto -70px;
+
+		//background-image: url("/siso/images/orion.png");
+		background-image: image-url('orion.png');
+		background-position: right bottom;
+		background-repeat: no-repeat;
+		background-size: 150px;
+		div.hc-page-head {
+			background: $color-bar;
+			.hc-site-title {
+				display: inline-block;
+				margin: 0; line-height: 40px; padding: 10px 8px 0px;
+			}
+			.hc-site-comment {
+			}
+		}
+		div.hc-flash-wrapper {
+		}
+		div.hc-page-body {
+			padding:10px;
+		}
+		div.hc-tail-placeholder {
+			height:60px;
+		}
+	}
+	div.hc-site-tail {
+		border-top: 1px solid $color-border;
+		margin: 0 150px 0 10px; padding: 5px 0;
+		height: 60px; position: relative;
+		text-align: right;
+		font-size: 0.8em;
+		ul {
+			margin: 0;
+			li {
+				list-style:none;
+			}
+		}
+	}
+}
+
+.hc-dialog {
+	margin: 100px auto; max-width: 480px;
+	text-align: center;
+
+	background: $color-hlback; border: 1px solid $color-hlback;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 40px 0 $color-border;
+
+	.hc-dialog-title {
+		font-size: 1.1em;
+		background: $color-bar;
+		line-height: 1.4em; margin: 0;
+	}
+
+	.hc-dialog-body {
+		color: $color-hltext;
+		padding: 25px 30px;
+	}
+}
+
+div.hc-flash-wrapper {
+	padding: 10px; background: transparent;
+	float: right;
+	display: inline-flex;
+
+	div.flash { padding: 5px; border-radius: 5px;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5), 0 0 40px 0 $color-border;
+	}
+	div.notice { background:#cfd; color:#050; border-color: #050; }
+	div.error  { background:#fdd; color:#500; border-color: #500; }
+}
+
+div.hc-ribbon-info {
+	float: right;
+	padding: 5px;
+	border-bottom-left-radius: 10px;
+	background: $color-back;
+	ul {
+		height: 1em;
+		margin: 0; padding: 0 0 0 15px;
+		display: flex;
+		li {
+			font-size: 0.9em;
+			margin: 0 10px 0 0;
+			list-style: none;
+			img { height: 40px; }
+		}
+	}
+}
+
+div.hc-float-box-right { float: right; }
+div.hc-float-box {
+	padding: 5px;
+	border-radius: 5px;
+	border: 2px solid $color-boxborder;
+
+	color: $color-boxtext;
+	background: $color-boxback;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9);
+
+	display: inline-flex;
+	min-width: 320px;
+	div.hc-object-thumb {
+		margin-right: 5px;
+	}
+
+	div.hc-object-content {
+		margin-left: 10px;
+		ul {
+			margin: 4px 0; padding: 0;
+			li {
+				list-style: none;
+			}
+		}
+	}
+}
+
+h2,h3 { text-shadow: 0px 1px 1px rgba(0, 0, 0, 1); }
+h2,h3,h4,h5 { margin: 0.5em 0; }
+
+
+// work-around: firefox
+* { -moz-box-sizing: border-box; }
+

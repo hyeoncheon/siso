@@ -3,67 +3,65 @@
 <head>
   <title>SiSO</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag    "theme-blacksky", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="outter-frame">
+<div class="hc-main-wrapper">
 
-<div id="page-head">
-  <div id="info-box">
+<div class="hc-page-head">
+  <div class="hc-ribbon-info">
   <% if user_signed_in? %>
-    <div id="info-user">
-      <ul>
-        <% if current_user.image == nil %>
-        <%= image_tag current_user.gravatar_url %>
-        <% else %>
-        <img src="<%= url_for(:controller => "users", :action => "photo",
-                              :id => session[:user]) %>" />
-        <% end %>
-        <span class="ic-inline ic-user"></span>
-        <span><%= session[:name] %></span>
-        <span><%= session[:mail] %></span>
-        <li><%= link_to "settings", services_path %></li>
-        <li><%= link_to "signout", signout_services_path %></li>
-      </ul>
-    </div>
+    <ul>
+      <% if current_user.image == nil %>
+      <li><%= image_tag current_user.gravatar_url %></li>
+      <% else %>
+      <li><img src="<%= url_for(:controller => "users", :action => "photo",
+				:id => session[:user]) %>" /></li>
+      <% end %>
+      <li><%= session[:name] %></li>
+      <li><%= session[:mail] %></li>
+      <li><%= link_to "settings", services_path %></li>
+      <li><%= link_to "signout", signout_services_path %></li>
+    </ul>
   <% end %>
   </div>
-  <h1 id="prod-title">SiSO</h1>
-  <span id="prod-comment">Single Sign On service for Hyeoncheon Family.</span>
+  <h1 class="hc-site-title">SiSO</h1>
+  <span class="hc-prod-comment">Single Sign On service for Hyeoncheon Family.</span>
 </div>
 
-<div id="flash-wrapper">
+<div class="hc-flash-wrapper">
 <% flash.each do |key, value| %>
   <div class="flash <%= key %> round"><%= value %></div>
 <% end %>
 </div>
 
-<div id="page-body">
+<div class="hc-page-body">
 <% if user_signed_in? %>
 
   <%= yield %>
 
 <% else %>
-  <div id="login-dialog" class="siso-dialog">
-    <h2 class="siso-dialog-head">Login</h2>
-    <div class="siso-dialog-body">
+  <div id="siso-dialog-login" class="hc-dialog">
+    <div class="hc-dialog-title">Login</div>
+    <div class="hc-dialog-body">
       <span>Signin with</span>
-      <%= link_to "LDAP", "/auth/ldap" %>,
-      <%= link_to "OpenID", "/auth/open_id" %>
+      <%= link_to "LDAP", '/siso/auth/ldap' %>,
+      <%= link_to "OpenID", '/siso/auth/open_id' %>
       or
       <%= link_to "Other", signin_services_path %>
     </div>
   </div>
 <% end %>
 </div>
-<div id="page-tail-placeholder"></div>
+<div class="hc-tail-placeholder"></div>
 </div>
 <!-- page-tail placed outside of frame -->
-<div id="page-tail">
+<div class="hc-site-tail">
   <ul>
-    <li>SiSO - Member of Hyeoncheon, the Black Sky</li>
-    <li>powered by RubyOnRails, OmniAuth, Doorkeeper and Scinix</li>
+    <li>SiSO, Member of Hyeoncheon - the Black Sky</li>
+    <li>powered by Ruby on Rails, OmniAuth, Doorkeeper and Scinix</li>
   </ul>
 </div>
 
