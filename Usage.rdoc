@@ -1,0 +1,16 @@
+= Usage
+
+== Installation
+
+
+== Application Setup
+
+1. Go to http://sandbox.example.com/siso/oauth/applications to add new application.
+
+2. Click on "New Application" button
+
+3. Enter name of application and valid redirect uri for application (webapp). then it automatically generate "Application ID" and "Secret" for it.
+
+4. Use Application ID and Secret on client application's setting.
+
+
