@@ -3,7 +3,6 @@
 <head>
   <title>SiSO</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= stylesheet_link_tag    "theme-blacksky", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
@@ -18,8 +17,10 @@
       <li><%= image_tag current_user.gravatar_url %></li>
       <% else %>
       <li><img src="<%= url_for(:controller => "users", :action => "photo",
-				:id => session[:user]) %>" /></li>
+                                :id => session[:user]) %>" /></li>
       <% end %>
+      <li><%= current_user.active ? "active" : "inactive" %>
+          <%= current_user.group.name %></li>
       <li><%= session[:name] %></li>
       <li><%= session[:mail] %></li>
       <li><%= link_to "settings", services_path %></li>
@@ -28,12 +29,41 @@
   <% end %>
   </div>
   <h1 class="hc-site-title">SiSO</h1>
-  <span class="hc-prod-comment">Single Sign On service for Hyeoncheon Family.</span>
+  <span class="hc-site-comment">Single Sign On service for Hyeoncheon Family.</span>
 </div>
 
 <div class="hc-flash-wrapper">
 <% flash.each do |key, value| %>
-  <div class="flash <%= key %> round"><%= value %></div>
+  <script>
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.4'
+    }, 3000);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.35'
+    }, 3100);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.3'
+    }, 3200);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.25'
+    }, 3300);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.2'
+    }, 3400);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.15'
+    }, 3500);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.1'
+    }, 3600);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.opacity = '.05'
+    }, 3900);
+    setTimeout(function(){
+        document.getElementById("flash-<%= key %>").style.display = 'none'
+    }, 4000);
+  </script>
+  <div class="flash <%= key %> round" id="flash-<%= key %>"><%= value %></div>
 <% end %>
 </div>
 
@@ -67,3 +97,4 @@
 
 </body>
 </html>
+<!-- vim: set ts=2 sw=2 expandtab: -->

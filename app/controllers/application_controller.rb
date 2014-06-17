@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     end
 
     def is_admin_session?
-      return 1 if current_user.group.name == 'admin'
+      return 1 if current_user and current_user.group.name == 'admin'
     end
 end
 # vim: set ts=2 sw=2 expandtab:

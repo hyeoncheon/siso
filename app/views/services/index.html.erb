@@ -1,4 +1,5 @@
 <% if user_signed_in? %>
+<!--
 <div id="siso-user-profile" class="hc-float-box hc-float-box-right">
   <div id="siso-user-profile" class="hc-object-content">
     <ul>
@@ -14,34 +15,41 @@
     </ul>
   </div>
 </div>
+-->
 <% end %>
 
 <div id="services_manage" class="services paragraph">
-  <h2>Authentication Services - Settings</h2>
-  <h3>Your current Authentications:</h3>
+  <h2>Authentication Services</h2>
 
-  <% @services.each do |service| %>  
-    <div class="hc-float-box">
-      <div class="hc-object-thumb">
-      <% if ['facebook','google','twitter','ldap'].index(service.provider) %>
-        <%= image_tag "/icons/64s/#{service.provider}.png", :size => "64x64" %>
-      <% else %>
-        <%= image_tag "/icons/64s/open_id.png", :size => "64x64" %>
-      <% end %>
-      </div>
-
-      <div class="hc-object-content">
-      UID: <%= service.uid if service.uid != '' %><br />
-      Name: <%= service.sname if service.sname != '' %><br />
-      Mail: <%= service.smail if service.smail != '' %><br />
+  <div id="siso-current-authentications" class="hc-table-normal">
+  <h3>Your Authentications:</h3>
+  <table>
+    <tbody>
+    <tr>
+      <th>Auth Type</th>
+      <th>UID</th>
+      <th>Name</th>
+      <th>Mail</th>
+      <th>Action</th>
+    </tr>
+    <% @services.each do |service| %>  
+    <tr>
+      <td class="ta-center"><%= service.provider %></td>
+      <td class="ta-center"><%= service.uid if service.uid != '' %></td>
+      <td class="ta-center"><%= service.sname if service.sname != '' %></td>
+      <td class="ta-center"><%= service.smail if service.smail != '' %></td>
       <% if session[:auth] == service.id %>
-      <span>Current Login</span>
+      <td class="ta-center">Current Login</td>
       <% else %>
-      <%= link_to "Remove this service", service, :confirm => 'Are you sure you want to remove this authentication?', :method => :delete, :class => "remove" %>
+      <td class="ta-center"><%= link_to "Remove this service", service,
+        :confirm => 'Are you sure you want to remove this authentication?',
+        :method => :delete, :class => "remove" %></td>
       <% end %>
-      </div>
-    </div>  
+    </tr>
   <% end %>
+    </tbody>
+  </table>
+  </div>
 
   <div id="services_available">
   <h3>Add more Authentications:</h3>
@@ -49,3 +57,4 @@
   <!--%= render 'services_list'%-->
   </div>
 </div>
+<!-- vim: set ts=2 sw=2 expandtab: -->
