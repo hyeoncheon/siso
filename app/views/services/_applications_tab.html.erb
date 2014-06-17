@@ -1,0 +1,26 @@
+  <!-- authorized applications for user -->
+  <div id="siso-users-applications" class="hc-table-normal">
+    <h3>Your authorized applications:</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Application</th>
+        <th>Created at</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @applications.each do |application| %>
+      <tr>
+        <td class="ta-center"><%= application.name %></td>
+        <td class="ta-center"><%= application.created_at.strftime(
+          '%Y-%m-%d %H:%M:%S') %></td>
+        <td class="ta-center"><%=
+            render '/doorkeeper/authorized_applications/delete_form',
+            application: application %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- vim: set ts=2 sw=2 expandtab: -->

@@ -65,8 +65,10 @@ class ServicesController < ApplicationController
   def index
     if current_user
       @services = current_user.services.order('provider asc')
+      @applications = Doorkeeper::Application.authorized_for(current_user)
     else
       @services = []
+      @applications = []
     end
   end
 

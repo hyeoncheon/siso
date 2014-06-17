@@ -1,60 +1,27 @@
-<% if user_signed_in? %>
-<!--
-<div id="siso-user-profile" class="hc-float-box hc-float-box-right">
-  <div id="siso-user-profile" class="hc-object-content">
-    <ul>
-      <li><%= session[:name] %> &lt;<%= session[:mail] %>&gt;</li>
-      <li><%= current_user.phone %></li>
-      <li><%= current_user.mobile %></li>
-    </ul>
-    <ul>
-      <li>Since: <%= current_user.created_at.strftime("%Y-%m-%d") %>
-      (<%= (Date.today - current_user.created_at.to_datetime).to_f %>)</li>
-      <li><%= current_user.active ? "Active" : "Inactive" %>
-      Member of <%= current_user.group.name %> group</li>
-    </ul>
-  </div>
-</div>
--->
-<% end %>
 
-<div id="services_manage" class="services paragraph">
-  <h2>Authentication Services</h2>
 
-  <div id="siso-current-authentications" class="hc-table-normal">
-  <h3>Your Authentications:</h3>
-  <table>
-    <tbody>
-    <tr>
-      <th>Auth Type</th>
-      <th>UID</th>
-      <th>Name</th>
-      <th>Mail</th>
-      <th>Action</th>
-    </tr>
-    <% @services.each do |service| %>  
-    <tr>
-      <td class="ta-center"><%= service.provider %></td>
-      <td class="ta-center"><%= service.uid if service.uid != '' %></td>
-      <td class="ta-center"><%= service.sname if service.sname != '' %></td>
-      <td class="ta-center"><%= service.smail if service.smail != '' %></td>
-      <% if session[:auth] == service.id %>
-      <td class="ta-center">Current Login</td>
-      <% else %>
-      <td class="ta-center"><%= link_to "Remove this service", service,
-        :confirm => 'Are you sure you want to remove this authentication?',
-        :method => :delete, :class => "remove" %></td>
-      <% end %>
-    </tr>
-  <% end %>
-    </tbody>
-  </table>
-  </div>
+<div id="pane-services" class="hc-paragraph" style="float:right; width: 50%">
+  <h2>Authentications</h2>
+  <%= render 'authentications_tab' %>
 
-  <div id="services_available">
+  <div id="services_available" class="hc-table-normal">
   <h3>Add more Authentications:</h3>
-
   <!--%= render 'services_list'%-->
   </div>
 </div>
+
+<div id="pane-applications" class="hc-paragraph" style="float:left; width: 50%">
+  <h2>Applications</h2>
+  <%= render 'applications_tab' %>
+
+  <% if is_admin_session? %>
+  <div id="services_available" class="hc-table-normal hc-admin-session">
+  <h3>Application Management:</h3>
+  <div>
+    <a href="/siso/oauth/applications">Registered Applications</a>
+  </div>
+  </div>
+  <% end %>
+</div>
+
 <!-- vim: set ts=2 sw=2 expandtab: -->

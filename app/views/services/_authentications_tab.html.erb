@@ -1,0 +1,30 @@
+  <div id="siso-current-authentications" class="hc-table-normal">
+  <h3>Your Authentication Services:</h3>
+  <table>
+    <tbody>
+    <tr>
+      <th>Auth Type</th>
+      <th>UID</th>
+      <th>Name</th>
+      <th>Mail</th>
+      <th>Action</th>
+    </tr>
+    <% @services.each do |service| %>  
+    <tr>
+      <td class="ta-center"><%= service.provider %></td>
+      <td class="ta-center"><%= service.uid if service.uid != '' %></td>
+      <td class="ta-center"><%= service.sname if service.sname != '' %></td>
+      <td class="ta-center"><%= service.smail if service.smail != '' %></td>
+      <% if session[:auth] == service.id %>
+      <td class="ta-center">Current Login</td>
+      <% else %>
+      <td class="ta-center"><%= link_to "Remove this service", service,
+        :confirm => 'Are you sure you want to remove this authentication?',
+        :method => :delete, :class => "remove" %></td>
+      <% end %>
+    </tr>
+  <% end %>
+    </tbody>
+  </table>
+  </div>
+  <!-- vim: set ts=2 sw=2 expandtab: -->

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   helper_method :user_signed_in?
-  helper_method :is_admin?
+  helper_method :is_admin_session?
 
   private
     def current_user
