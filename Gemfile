@@ -40,6 +40,7 @@ gem 'unicorn'
 # gem 'ruby-debug'
 
 ### local
+gem 'omniauth-facebook'
 gem 'omniauth-openid'
 gem 'omniauth-ldap'
 gem 'doorkeeper'

@@ -1,0 +1,35 @@
+<hash>
+  <provider>facebook</provider>
+  <uid>000000</uid>
+  <info>
+    <email>anony@gmail.com</email>
+    <name>Anony Mouse</name>
+    <first-name>Anony</first-name>
+    <last-name>Mouse</last-name>
+    <image>http://graph.facebook.com/869113049769868/picture</image>
+    <urls>
+      <Facebook>https://www.facebook.com/app_scoped_user_id/000000/</Facebook>
+    </urls>
+    <verified type="boolean">true</verified>
+  </info>
+  <credentials>
+    <token>CAAE...</token>
+    <expires-at type="integer">1408329605</expires-at>
+    <expires type="boolean">true</expires>
+  </credentials>
+  <extra>
+    <raw-info>
+      <id>000000</id>
+      <email>anony@gmail.com</email>
+      <first-name>Anony</first-name>
+      <gender>male</gender>
+      <last-name>Mouse</last-name>
+      <link>https://www.facebook.com/app_scoped_user_id/000000/</link>
+      <locale>en_US</locale>
+      <name>Anony Mouse</name>
+      <timezone type="integer">9</timezone>
+      <updated-time>2014-06-19T02:26:50+0000</updated-time>
+      <verified type="boolean">true</verified>
+    </raw-info>
+  </extra>
+</hash>

@@ -6,6 +6,7 @@ class ServicesController < ApplicationController
 
     # XXX logger.debug(omniauth.to_yaml)
     logger.debug("DEBUG current provider: --#{ai[:provider]}--")
+    logger.debug("DEBUG info: --#{omniauth.to_xml}--")
     if ai[:provider].to_s == 'open_id'
       ai[:name] = omniauth['info']['name']
       ai[:mail] = omniauth['info']['email']
@@ -19,6 +20,11 @@ class ServicesController < ApplicationController
       ai[:phone] = omniauth['info']['phone']
       ai[:mobile] = omniauth['info']['mobile']
       logger.debug("ldap user - uid: #{ai[:uid]} name: #{ai[:name]}")
+    elsif ai[:provider].to_s == 'facebook'
+      ai[:uid] = omniauth['uid']
+      ai[:name] = omniauth['info']['name']
+      ai[:mail] = omniauth['info']['email']
+      ai[:image] = omniauth['info']['image']
     end
     logger.debug("DEBUG current mail: --#{ai[:mail]}--")
 
