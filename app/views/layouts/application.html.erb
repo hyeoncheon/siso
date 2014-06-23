@@ -28,8 +28,14 @@
     </ul>
   <% end %>
   </div>
-  <h1 class="hc-site-title">SiSO</h1>
-  <span class="hc-site-comment">Single Sign On service for Hyeoncheon Family.</span>
+  <h1 class="hc-site-title"><%= link_to 'SiSO', services_path %></h1>
+  <span class="hc-site-comment">Single Sign On service for Hyeoncheon.</span>
+</div>
+<div class="hc-headline-menu">
+  <ul>
+    <li><%= link_to 'Home', services_path %></li>
+    <li><%= link_to 'Users', users_path %></li>
+  </ul>
 </div>
 
 <div class="hc-flash-wrapper">

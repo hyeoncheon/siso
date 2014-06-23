@@ -1,10 +1,21 @@
 class UsersController < ApplicationController
+  before_filter :login_required
+
   def photo
     @user = User.find(params[:id])
-    send_data(@user.image,
-              :filename => "profile-#{@user.id}.jpg",
-              :type => "Image/Jpeg",
-              :disposition => "inline")
+    if @user.image
+      if @user.image.isutf8
+        redirect_to @user.image
+      else
+        send_data(@user.image,
+                  :filename => "profile-#{@user.id}.jpg",
+                  :type => "Image/Jpeg",
+                  :disposition => "inline")
+      end
+    else
+      # default image
+      redirect_to '/images/user-default.png'
+    end
   end
 
   def index

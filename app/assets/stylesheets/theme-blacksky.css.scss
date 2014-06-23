@@ -60,6 +60,20 @@ body {
 				font-weight: 600;
 			}
 		}
+		div.hc-headline-menu {
+			ul {
+				margin: 0; padding: 0 0 0 50px;
+				background: $color-boxback;
+				li {
+					display: inline;
+					padding: 0 10px;
+					line-height: 1em;
+					a {
+						color: $color-text;
+					}
+				}
+			}
+		}
 		div.hc-flash-wrapper {
 		}
 		div.hc-page-body {

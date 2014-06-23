@@ -1,51 +1,61 @@
-<div id="controller-body" class="services paragraph">
+<!-- vim: set ts=2 sw=2 expandtab: -->
+<div id="pane-users" class="hc-paragraph">
   <h2>User Management</h2>
+
+  <div id="siso-current-authentications" class="hc-table-normal">
   <h3>Registered Users:</h3>
-
-  <% @users.each do |user| %>  
-    <div class="object-box round">  
-      <div class="object-image">
+  <table>
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <th>Photo</th>
+      <th>Auth</th>
+      <th>Name</th>
+      <th>Mail</th>
+      <th>Phone</th>
+      <th>Mobile</th>
+      <th>Birthday</th>
+      <th>Status</th>
+      <th>Group</th>
+      <th>Action</th>
+    </tr>
+    <% @users.each do |user| %>
+    <tr>
+      <td class="ta-center"><%= user.id %></td>
+      <td>
       <% if user.image == nil %>
-        <%= image_tag user.gravatar_url(:size => 120), :class => 'user-photo' %>
+        <%= image_tag user.gravatar_url(size: 32), class: 'user-photo' %>
       <% else %>
-        <img src="<%= url_for(:controller => "users", :action => "photo",
-                              :id => user) %>" class="user-photo" />
+        <img src="<%= url_for(controller: 'users', action: 'photo', id: user)
+            %>" height='32px' class="user-photo" />
       <% end %>
-      </div>
-
-      <%= image_tag "/icons/64s/#{user.services.first.provider}.png",
-      :size => "32x32", :class => "info-provider" %>
-      <div class="object-data">
-        <ul class="align-right">
-          <li>uid</li>
-          <li>name</li>
-          <li>mail</li>
-          <li>phone</li>
-          <li>mobile</li>
-          <li>birthday</li>
-          <li>status</li>
-          <li>group</li>
-        </ul>
-        <ul class="align-left">
-          <li>: <%= user.id if user.id != '' %>
-          <% if session[:user] == user.id %>
-            <span class="highlight-1">You!</span>
-          <% else %>
-            <%= link_to "Unregister", user, :confirm => 'Are you sure you want to remove this authentication?', :method => :delete, :class => "remove" %>
-          <% end %>
-          </li>
-          <li>: <%= user.name if user.name != '' %></li>
-          <li>: <%= user.mail if user.mail != '' %></li>
-          <li>: <%= user.phone %></li>
-          <li>: <%= user.mobile %></li>
-          <li>: <%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></li>
-          <li>: <%= user.active ? "Active" : "Inactive" %></li>
-          <li>:
-          <span class="ic-inline ic-<%= user.group.name %>"></span>
-          <%= user.group.name %> 
-          </li>
-        </ul>
-      </div>
-    </div>  
+      </td>
+      <td class="ta-center"><%= user.services.first.provider %></td>
+      <td class="ta-center"><%= user.name %></td>
+      <td class="ta-center"><%= user.mail %></td>
+      <td class="ta-center"><%= user.phone %></td>
+      <td class="ta-center"><%= user.mobile %></td>
+      <td class="ta-center"><%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+      <td class="ta-center"><%= user.active ? "Active" : "Inactive" %></td>
+      <td class="ta-center siso-group-<%= user.group.name %>"
+        ><%= user.group.name %></td>
+      <!--%= image_tag "/icons/64s/#{user.services.first.provider}.png",
+      :size => "32x32", :class => "info-provider" %-->
+      <td class="ta-center">
+      <% if session[:user] == user.id %>
+        <span class="highlight-1">You!</span>
+      <% else %>
+        <%= link_to "Unregister", user, method: 'delete', class: 'remove',
+            confirm: 'Are you sure you want to remove this authentication?' %>
+      <% end %>
+      </td>
+    </tr>
   <% end %>
+    </tbody>
+  </table>
+  </div>
+
 </div>
+
+<!--% if is_admin_session? %-->
+<!--% end %-->
