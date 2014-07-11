@@ -2,7 +2,7 @@
 
 Siso::Application.config.session_store :active_record_store, {
 	key: '_siso_session',
-	expire_after: 24.hours,
+	expire_after: 2.hours,
 }
 
 # Use the database for sessions instead of the cookie-based default,
