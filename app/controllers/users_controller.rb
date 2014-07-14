@@ -26,5 +26,17 @@ class UsersController < ApplicationController
       redirect_to services_path
     end
   end
+
+  def toggle_active
+    if is_admin_session?
+      @user = User.find(params[:id])
+      @user.active = !@user.active
+      @user.save
+      redirect_to users_path
+    else
+      flash[:error] = 'Only admin can access this.'
+      redirect_to services_path
+    end
+  end
 end
 # vim:set ts=2 sw=2 expandtab:

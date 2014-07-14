@@ -15,6 +15,7 @@ Siso::Application.routes.draw do
   resources :users do
     member do
       get 'photo'
+      get 'toggle_active'
     end
   end
 

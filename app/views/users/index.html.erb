@@ -36,7 +36,9 @@
       <td class="ta-center"><%= user.phone %></td>
       <td class="ta-center"><%= user.mobile %></td>
       <td class="ta-center"><%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-      <td class="ta-center"><%= user.active ? "Active" : "Inactive" %></td>
+      <td class="ta-center"><%= user.active ? "Active" : "Inactive" %>
+        <%= link_to 'T', toggle_active_user_path(user.id) %>
+      </td>
       <td class="ta-center siso-group-<%= user.group.name %>"
         ><%= user.group.name %></td>
       <!--%= image_tag "/icons/64s/#{user.services.first.provider}.png",
