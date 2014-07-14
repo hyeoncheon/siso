@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       end
     else
       # default image
-      redirect_to '/images/user-default.png'
+      redirect_to ActionController::Base.helpers.asset_path('user-black.png')
     end
   end
 
