@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :login_required
+  before_filter :login_required, except: :photo
 
   def photo
     @user = User.find(params[:id])
