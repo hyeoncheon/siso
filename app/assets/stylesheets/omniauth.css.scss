@@ -1,0 +1,127 @@
+// hyeoncheon theme - black sky. (default)
+//
+// vim:set ts=2 sw=2:
+
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600);
+
+
+/* variables... */
+$font-stack:	"Titillium Web", "맑은 고딕", "Malgun Gothic";
+
+$col-nor-bak: #222;
+$col-nor-bar: #111;
+$col-nor-bdr: #444;
+$col-nor-txt:	#bbb;
+$col-nor-lnk:	#44d;
+
+$col-box-txt:	#aaa;
+$col-box-bak:	#333;
+$col-box-bdr:	#666;
+
+$col-hl0-txt:	#002;
+$col-hl0-bak:	#99a;
+
+$col-adm-txt:	#faa;
+$col-adm-bak:	rgba(192, 64, 64, 0.3);
+$col-adm-bdr:	#a66;
+
+$tag-saf-txt: #070;
+$tag-saf-bak: #bfb;
+$tag-nor-txt: #333;
+$tag-nor-bak: #888;
+$tag-wrn-txt: #730;
+$tag-wrn-bak: #fca;
+$tag-err-txt: #800;
+$tag-err-bak: #fbb;
+
+
+$box-border-width: 10px;
+
+
+
+html {
+  height:100%; margin:0; padding:0; border:0;
+  body {
+    font-family: $font-stack;
+    font-size: 10pt;
+    font-weight: 400;
+    color: $col-nor-txt;
+    background: $col-nor-bak;
+
+    background-image: image-url('orion.png');
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-size: 150px;
+
+    h1, form {
+      -moz-box-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+      -webkit-box-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+    }
+    h1 {
+      margin: 40px auto 0px;
+      padding: 10px 10px 15px;
+      width: 320px;
+
+      font-size: 1.4em; text-align: center;
+      color: white; background: #555;
+
+      border: $box-border-width solid #444;
+      border-bottom: 0;
+      -moz-border-radius-topleft: $box-border-width;
+      -moz-border-radius-topright: $box-border-width;
+      -webkit-border-top-left-radius: $box-border-width;
+      -webkit-border-top-right-radius: $box-border-width;
+      border-top-left-radius: $box-border-width;
+      border-top-right-radius: $box-border-width;
+    }
+    form {
+      margin: 0px auto 40px;
+      padding: 20px;
+      width: 300px;
+
+      background: white;
+
+      border: $box-border-width solid #eee;
+      border-top: 0;
+      -moz-border-radius-bottomleft: $box-border-width;
+      -moz-border-radius-bottomright: $box-border-width;
+      -webkit-border-bottom-left-radius: $box-border-width;
+      -webkit-border-bottom-right-radius: $box-border-width;
+      border-bottom-left-radius: $box-border-width;
+      border-bottom-right-radius: $box-border-width;
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      input {
+        border: 1px solid black;
+        padding: 4px 8px;
+        display: block;
+        margin-bottom: 10px;
+        width: 280px;
+      }
+      input#identifier, input#openid_url {
+        background: url(http://openid.net/login-bg.gif) no-repeat;
+        background-position: 0 50%;
+        padding-left: 18px;
+      }
+      button {
+        padding: 4px 30px;
+        display: block;
+        margin: 20px auto 0;
+      }
+      fieldset {
+        border: 1px solid #ccc;
+        border-left: 0;
+        border-right: 0;
+        padding: 10px 0;
+      }
+      fieldset input {
+        width: 260px;
+        font-size: 16px;
+      }
+    }
+  }
+}
