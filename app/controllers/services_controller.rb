@@ -27,31 +27,36 @@ class ServicesController < ApplicationController
       ai[:image] = omniauth['info']['image']
     end
     logger.debug("DEBUG current mail: --#{ai[:mail]}--")
+    if ai[:mail] == nil or ai[:mail] == ''
+      flash[:error] = "authentication error! no mail address found."
+      redirect_to root_path
+      return
+    end
 
     unless @auth = Service.find_by_provider_and_uid(ai[:provider], ai[:uid])
-      unless @user = User.find_by_mail(ai[:mail])
+      unless user = User.find_by_mail(ai[:mail])
         # service and user not found. so register new user and service.
         user = Group.find_by_name('guest').users.create(:mail => ai[:mail])
-        @auth = user.services.create(:uid => ai[:uid],
-                                     :provider => ai[:provider],
-                                     :sname => ai[:name],
-                                     :smail => ai[:mail])
         user.update_attributes(:name => ai[:name],
                                :image => ai[:image],
                                :phone => ai[:phone],
                                :mobile => ai[:mobile])
-        if user.id == 1
+        if User.count == 1
           user.update_attributes(:group_id => Group.find_by_name('admin').id,
                                  :active => true)
-          flash[:notice] = "The first user #{user.mail}" +
+          flash[:notice] = "The 'one and only' user #{user.mail}" +
             " registered and auto activated!" +
             " You are Super User for this site!"
         else
           flash[:notice] = "New user #{user.mail} signin via #{ai[:provider]}."
         end
       else
-        flash[:error] = "new authentication for existing user."
+        flash[:notice] = "add new authentication service for existing user."
       end
+      @auth = user.services.create(:uid => ai[:uid],
+                                   :provider => ai[:provider],
+                                   :sname => ai[:name],
+                                   :smail => ai[:mail])
     else
       flash[:notice] = "welcome! #{@auth.user.mail} (from #{@auth.provider})"
       # update service information automatically. is it right?
