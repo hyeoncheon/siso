@@ -6,6 +6,7 @@
 
 # Ignore bundler config
 /.bundle
+/vendor/bundle
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -16,4 +17,4 @@
 /_backups
 
 # ignore site specific configuration from .dist file.
-/config/initializers/omniauth.rb
+#/config/initializers/omniauth.rb
